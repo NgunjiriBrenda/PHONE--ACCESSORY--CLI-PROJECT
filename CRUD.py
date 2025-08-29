@@ -8,9 +8,15 @@ def add_accessory(name, accessory_type, price, stock):
     session.commit()
     print(f"Added accessory: {name}")
 
+# Updates an existing accessory
+def update_accessory_stock(accessory_id, new_stock):
+    accessory = session.query(Accessories).filter_by(id=accessory_id).first()
+    if accessory():
+        accessory.stock = new_stock
+        session.commit()
+        print(f"Updated stock for '{accessory.name}' to {new_stock}")
+    else:
+        print(f"Accessory with ID {accessory_id}not found")
+
 
     
-
-                              
-
-
