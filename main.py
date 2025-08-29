@@ -1,34 +1,42 @@
-import click
+from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
+from sqlalchemy.orm import relationship, declarative_base
+from datetime import datetime
 
-from CRUD import add_accessory, update_accessory_stock, view_accessory_stock, delete_accessory
+Base = declarative_base()
 
-def main_menu():
-    while True:
-        click.secho("Welcome to the Phone Accessory Store Manager",fg="red")
-        click.secho("Select Option to Proceed",fg="blue")
-        click.secho("1.Accessories", fg="yellow")
-        click.secho("2.Customers", fg="yellow")
-        click.secho("3.Sales", fg="yellow")
-        click.secho("4.Exit", fg="blue")
+class Accessory(Base):
+    __tablename__= "accessories"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    type = Column(String, nullable=False)
+    price = Column(Float, nullable=False)
+    stock = Column(Integer, nullable=False)
 
-        user_input = click.prompt("Select Option", type=int)
-
-        if user_input == 1:
-            accessory_menu()
-
-        elif user_input == 2:
-            customer_menu()
-
-        elif user_input == 3:
-            sales_menu()
+    sales = relationship("Sales", back_populates="accessory")
 
 
-def accessory_menu():
-    while True:
+class Customer(Base):
+    __tablename__ = "customers"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, nullable=False)
 
-#rom CRUD import add_accessory, add_customer, add_sales
+    sales = relationship("Sale", back_populates="customer")
 
 
-    
-    
+class Sale(Base):
+    __tablename__ = "sales"
+    id = Column(Integer, primary_key=True)
+    customer_id = Column(Integer, ForeignKey("customers.id"))
+    accessory_id = Column(Integer, nullable=False)
+    quantity = Column(Integer, nullable=False)
+    sale_date = Column(DateTime, default=datetime.utcnow)
+
+    customer = relationship("Customer", back_populates = "sales")
+    accessory = relationship("Accessory", back_populates="sales")
+
+
+                         
+
+
 

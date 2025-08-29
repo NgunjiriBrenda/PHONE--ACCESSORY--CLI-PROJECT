@@ -14,7 +14,7 @@ class Accessories(Base):
     price = Column(Float, nullable=False)
     stock = Column(Integer, default=0)
     
-   
+ 
     sales = relationship("Sales", back_populates="accessory")
 
 class Customers(Base):
@@ -25,7 +25,6 @@ class Customers(Base):
     phone = Column(String(20))
     email = Column(String(100))
     
-   
     sales = relationship("Sales", back_populates="customer")
 
 class Sales(Base):
@@ -36,8 +35,6 @@ class Sales(Base):
     accessory_id = Column(Integer, ForeignKey('accessories.id'), nullable=False)  
     quantity = Column(Integer, nullable=False, default=1)
     date = Column(DateTime, default=datetime.utcnow)
-    
-   
     accessory = relationship("Accessories", back_populates="sales")
     customer = relationship("Customers", back_populates="sales")
 
