@@ -26,3 +26,17 @@ def view_accessories():
         print(f'ID: {accessory.id}, Name: {accessory.name}, Type:{accessory.accessory_type}, Price: ${accessory.price}, Stock:{accessory.stock}')
         return accessories
     
+# Delete an accessory
+def delete_accessory(accessory_id):
+    accessory = session.query(Accessories).filter_by(id=accessory_id).first()
+    if accessory:
+        session.delete(accessory)
+        session.commit()
+        print(f"Deleted accessory: {accessory.name}")
+
+    else:
+        print(f"Accessory with ID {accessory_id}not found")
+
+
+
+    
