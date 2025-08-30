@@ -1,42 +1,125 @@
-from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime
-from sqlalchemy.orm import relationship, declarative_base
-from datetime import datetime
+import click
+from CRUD import (
+    list_accessories, add_accessory, update_accessory, delete_accessory,
+    list_customers, add_customer, update_customer, delete_customer
+)
 
-Base = declarative_base()
+def main_menu():
+    while True:
+        click.secho("\n" + "="*40, fg="blue")
+        click.secho("Phone Accessory Store Manager", fg="blue", bold=True)
+        click.secho("1. Accessory Management", fg="yellow")
+        click.secho("2. Customer Management", fg="yellow")
+        click.secho("3. Exit", fg="red")
+        click.secho("="*40, fg="blue")
 
-class Accessory(Base):
-    __tablename__= "accessories"
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    type = Column(String, nullable=False)
-    price = Column(Float, nullable=False)
-    stock = Column(Integer, nullable=False)
+        choice = click.prompt("Select Option", type=int)
+        
+        if choice == 1:
+            accessory_menu()
+        elif choice == 2:
+            customer_menu()
+        elif choice == 3:
+            click.secho("Goodbye!", fg="green")
+            break
+        else:
+            click.secho("Invalid choice. Please try again.", fg="red")
 
-    sales = relationship("Sales", back_populates="accessory")
+def accessory_menu():
+    while True:
+        click.secho("\nAccessory Management", fg="green")
+        click.secho("1. List Accessories", fg="yellow")
+        click.secho("2. Add Accessory", fg="yellow")
+        click.secho("3. Update Accessory", fg="yellow")
+        click.secho("4. Delete Accessory", fg="yellow")
+        click.secho("5. Back to Main Menu", fg="blue")
+        
+        choice = click.prompt("Select Option", type=int)
+        
+        if choice == 1:
+            accessories = list_accessories()
+            click.secho("\nAll Accessories:", fg="blue")
+            for accessory in accessories:
+                click.echo(f"ID: {accessory.id}, Name: {accessory.name}, Category: {accessory.category}, Price: ${accessory.price}, Stock: {accessory.stock}")
+        
+        elif choice == 2:
+            name = click.prompt("Accessory Name")
+            category = click.prompt("Category")
+            price = click.prompt("Price", type=float)
+            stock = click.prompt("Stock", type=int)
+            accessory = add_accessory(name, category, price, stock)
+            click.secho(f"Added accessory: {accessory.name}", fg="green")
+        
+        elif choice == 3:
+            accessory_id = click.prompt("Accessory ID to update", type=int)
+            name = click.prompt("New Name (press Enter to skip)", default="", show_default=False)
+            category = click.prompt("New Category (press Enter to skip)", default="", show_default=False)
+            price_str = click.prompt("New Price (press Enter to skip)", default="", show_default=False)
+            stock_str = click.prompt("New Stock (press Enter to skip)", default="", show_default=False)
+            
+            # Convert inputs
+            price = float(price_str) if price_str else None
+            stock = int(stock_str) if stock_str else None
+            
+            accessory = update_accessory(accessory_id, name or None, category or None, price, stock)
+            if accessory:
+                click.secho(f"Updated accessory: {accessory.name}", fg="green")
+            else:
+                click.secho("Accessory not found", fg="red")
+        
+        elif choice == 4:
+            accessory_id = click.prompt("Accessory ID to delete", type=int)
+            if delete_accessory(accessory_id):
+                click.secho("Accessory deleted successfully", fg="green")
+            else:
+                click.secho("Accessory not found", fg="red")
+        
+        elif choice == 5:
+            break
 
+def customer_menu():
+    while True:
+        click.secho("\nCustomer Management", fg="green")
+        click.secho("1. List Customers", fg="yellow")
+        click.secho("2. Add Customer", fg="yellow")
+        click.secho("3. Update Customer", fg="yellow")
+        click.secho("4. Delete Customer", fg="yellow")
+        click.secho("5. Back to Main Menu", fg="blue")
+        
+        choice = click.prompt("Select Option", type=int)
+        
+        if choice == 1:
+            customers = list_customers()
+            click.secho("\nAll Customers:", fg="blue")
+            for customer in customers:
+                click.echo(f"ID: {customer.id}, Name: {customer.name}, Email: {customer.email}")
+        
+        elif choice == 2:
+            name = click.prompt("Customer Name")
+            email = click.prompt("Email")
+            customer = add_customer(name, email)
+            click.secho(f"Added customer: {customer.name}", fg="green")
+        
+        elif choice == 3:
+            customer_id = click.prompt("Customer ID to update", type=int)
+            name = click.prompt("New Name (press Enter to skip)", default="", show_default=False)
+            email = click.prompt("New Email (press Enter to skip)", default="", show_default=False)
+            
+            customer = update_customer(customer_id, name or None, email or None)
+            if customer:
+                click.secho(f"Updated customer: {customer.name}", fg="green")
+            else:
+                click.secho("Customer not found", fg="red")
+        
+        elif choice == 4:
+            customer_id = click.prompt("Customer ID to delete", type=int)
+            if delete_customer(customer_id):
+                click.secho("Customer deleted successfully", fg="green")
+            else:
+                click.secho("Customer not found", fg="red")
+        
+        elif choice == 5:
+            break
 
-class Customer(Base):
-    __tablename__ = "customers"
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-
-    sales = relationship("Sale", back_populates="customer")
-
-
-class Sale(Base):
-    __tablename__ = "sales"
-    id = Column(Integer, primary_key=True)
-    customer_id = Column(Integer, ForeignKey("customers.id"))
-    accessory_id = Column(Integer, nullable=False)
-    quantity = Column(Integer, nullable=False)
-    sale_date = Column(DateTime, default=datetime.utcnow)
-
-    customer = relationship("Customer", back_populates = "sales")
-    accessory = relationship("Accessory", back_populates="sales")
-
-
-                         
-
-
-
+if __name__ == "__main__":
+    main_menu()

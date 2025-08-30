@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Accessory, Customer
+from lib.models import Base, Accessory, Customer
 
 engine = create_engine("sqlite:///accessory.db", echo=True)
 
@@ -10,11 +10,11 @@ Session = sessionmaker(bind=engine)
 session= Session()
 
 #Add Accessories
-accessory = [
-    Accessory(name ="Silicon Phone Case", type="Case", price = 1000, stock= 50),
-    Accessory(name = "Phone Charm", type="Charm", price = 250, stock=100),
-    Accessory(name = "Screen Protector", type="Protector", Price = 500,stock=200 ),
-    Accessory(name = "Wireless Charger", type="Charger", Price = 350, stock=100),
+accessories = [
+    Accessory(name ="Silicon Phone Case", category="Case", price = 1000, stock= 50),
+    Accessory(name = "Phone Charm", category="Charm", price = 250, stock=100),
+    Accessory(name = "Screen Protector", category="Protector", price = 500,stock=200 ),
+    Accessory(name = "Wireless Charger", category="Charger", price = 350, stock=100),
 ]
 
 customers = [
@@ -24,8 +24,8 @@ customers = [
     Customer(name="Maureen Karimi", email="molly@gmail.com"),
 ]
 
-session.add_all(accessory+ customers)
+session.add_all(accessories+ customers)
 
-session.comit()
+session.commit()
 
 print("Database seeded successfully")

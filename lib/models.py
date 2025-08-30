@@ -5,19 +5,19 @@ from datetime import datetime
 
 Base = declarative_base()
 
-class Accessories(Base):  
+class Accessory (Base):  
     __tablename__ = 'accessories'
 
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
-    accessory_type = Column(String(50), nullable=False)
+    category = Column(String(50), nullable=False)
     price = Column(Float, nullable=False)
     stock = Column(Integer, default=0)
     
  
-    sales = relationship("Sales", back_populates="accessory")
+    sales = relationship("Sale", back_populates="accessory")
 
-class Customers(Base):
+class Customer(Base):
     __tablename__ = 'customers'
 
     id = Column(Integer, primary_key=True)
@@ -25,9 +25,9 @@ class Customers(Base):
     phone = Column(String(20))
     email = Column(String(100))
     
-    sales = relationship("Sales", back_populates="customer")
+    sales = relationship("Sale", back_populates="customer")
 
-class Sales(Base):
+class Sale(Base):
     __tablename__ = 'sales'
 
     id = Column(Integer, primary_key=True)
@@ -35,8 +35,8 @@ class Sales(Base):
     accessory_id = Column(Integer, ForeignKey('accessories.id'), nullable=False)  
     quantity = Column(Integer, nullable=False, default=1)
     date = Column(DateTime, default=datetime.utcnow)
-    accessory = relationship("Accessories", back_populates="sales")
-    customer = relationship("Customers", back_populates="sales")
+    accessory = relationship("Accessory", back_populates="sales")
+    customer = relationship("Customer", back_populates="sales")
 
 
 engine = create_engine("sqlite:///accessory.db")
