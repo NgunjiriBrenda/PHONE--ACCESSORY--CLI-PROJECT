@@ -7,19 +7,20 @@ from CRUD import (
 def main_menu():
     while True:
         click.secho("\n" + "="*40, fg="blue")
-        click.secho("Phone Accessory Store Manager", fg="blue", bold=True)
+        click.secho("Welcome to Phone Accessory Manager!")
         click.secho("1. Accessory Management", fg="yellow")
         click.secho("2. Customer Management", fg="yellow")
-        click.secho("3. Exit", fg="red")
+        click.secho("3. Sale Management", fg="yellow")
+        click.secho("4. Exit", fg="red")
         click.secho("="*40, fg="blue")
 
-        choice = click.prompt("Select Option", type=int)
+        user_prompt = click.prompt("Select Option", type=int)
         
-        if choice == 1:
+        if user_prompt == 1:
             accessory_menu()
-        elif choice == 2:
+        elif user_prompt == 2:
             customer_menu()
-        elif choice == 3:
+        elif user_prompt == 3:
             click.secho("Goodbye!", fg="green")
             break
         else:
@@ -34,15 +35,15 @@ def accessory_menu():
         click.secho("4. Delete Accessory", fg="yellow")
         click.secho("5. Back to Main Menu", fg="blue")
         
-        choice = click.prompt("Select Option", type=int)
+        user_prompt = click.prompt("Select Option", type=int)
         
-        if choice == 1:
+        if user_prompt== 1:
             accessories = list_accessories()
             click.secho("\nAll Accessories:", fg="blue")
             for accessory in accessories:
                 click.echo(f"ID: {accessory.id}, Name: {accessory.name}, Category: {accessory.category}, Price: ${accessory.price}, Stock: {accessory.stock}")
         
-        elif choice == 2:
+        elif user_prompt == 2:
             name = click.prompt("Accessory Name")
             category = click.prompt("Category")
             price = click.prompt("Price", type=float)
@@ -50,14 +51,13 @@ def accessory_menu():
             accessory = add_accessory(name, category, price, stock)
             click.secho(f"Added accessory: {accessory.name}", fg="green")
         
-        elif choice == 3:
+        elif user_prompt == 3:
             accessory_id = click.prompt("Accessory ID to update", type=int)
             name = click.prompt("New Name (press Enter to skip)", default="", show_default=False)
             category = click.prompt("New Category (press Enter to skip)", default="", show_default=False)
             price_str = click.prompt("New Price (press Enter to skip)", default="", show_default=False)
             stock_str = click.prompt("New Stock (press Enter to skip)", default="", show_default=False)
             
-            # Convert inputs
             price = float(price_str) if price_str else None
             stock = int(stock_str) if stock_str else None
             
@@ -67,14 +67,14 @@ def accessory_menu():
             else:
                 click.secho("Accessory not found", fg="red")
         
-        elif choice == 4:
+        elif user_prompt == 4:
             accessory_id = click.prompt("Accessory ID to delete", type=int)
             if delete_accessory(accessory_id):
                 click.secho("Accessory deleted successfully", fg="green")
             else:
                 click.secho("Accessory not found", fg="red")
         
-        elif choice == 5:
+        elif user_prompt == 5:
             break
 
 def customer_menu():
@@ -86,24 +86,26 @@ def customer_menu():
         click.secho("4. Delete Customer", fg="yellow")
         click.secho("5. Back to Main Menu", fg="blue")
         
-        choice = click.prompt("Select Option", type=int)
+        user_prompt = click.prompt("Select Option", type=int)
         
-        if choice == 1:
+        if user_prompt == 1:
             customers = list_customers()
             click.secho("\nAll Customers:", fg="blue")
             for customer in customers:
                 click.echo(f"ID: {customer.id}, Name: {customer.name}, Email: {customer.email}")
         
-        elif choice == 2:
-            name = click.prompt("Customer Name")
+        elif user_prompt == 2:
+            name = click.prompt("Customer Name Phone")
             email = click.prompt("Email")
-            customer = add_customer(name, email)
+            phone = click.prompt("Phone")
+            customer = add_customer(name, email, phone)
             click.secho(f"Added customer: {customer.name}", fg="green")
         
-        elif choice == 3:
+        elif user_prompt == 3:
             customer_id = click.prompt("Customer ID to update", type=int)
             name = click.prompt("New Name (press Enter to skip)", default="", show_default=False)
             email = click.prompt("New Email (press Enter to skip)", default="", show_default=False)
+            phone = click.prompt("New Phone (press Enter to skip)", default="", show_default=False)
             
             customer = update_customer(customer_id, name or None, email or None)
             if customer:
@@ -111,14 +113,14 @@ def customer_menu():
             else:
                 click.secho("Customer not found", fg="red")
         
-        elif choice == 4:
+        elif user_prompt == 4:
             customer_id = click.prompt("Customer ID to delete", type=int)
             if delete_customer(customer_id):
                 click.secho("Customer deleted successfully", fg="green")
             else:
                 click.secho("Customer not found", fg="red")
         
-        elif choice == 5:
+        elif user_prompt == 5:
             break
 
 if __name__ == "__main__":

@@ -10,10 +10,18 @@ def list_accessories():
 
 def add_accessory(name, category, price, stock):
     session = get_session()
-    accessory = Accessory(name=name, category=category, price=price, stock=stock)
-    session.add(accessory)
-    session.commit()
-    return accessory
+    try:
+        accessory = Accessory(name=name, category=category, price=price, stock=stock)
+        session.add(accessory)
+        session.commit()
+        session.refresh(accessory) 
+        return accessory
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close() 
+
 
 def view_accessory(accessory_id):
     session = get_session()
@@ -54,13 +62,19 @@ def list_customers():
     customers = session.query(Customer).all()
     return customers
 
-def add_customer(name, email):
+def add_customer(name, email, phone=None): 
     session = get_session()
-    customer = Customer(name=name, email=email)
-    session.add(customer)
-    session.commit()
-    
-    return customer
+    try:
+        customer = Customer(name=name, email=email, phone=phone)
+        session.add(customer)
+        session.commit()
+        session.refresh(customer)  
+        return customer
+    except Exception as e:
+        session.rollback()
+        raise e
+    finally:
+        session.close()
 
 def view_customer(customer_id):
     session = get_session()

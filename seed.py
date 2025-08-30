@@ -18,8 +18,8 @@ accessories = [
 ]
 
 customers = [
-    Customer(name="Jasmine James", email="jasmine@gmail.com"),
-    Customer(name="Bella Keith", email="bella@gmail.com"),
+    Customer(name="Jasmine James", email="jasmine@gmail.com",),
+    Customer(name="Bella Keith", email="bella@gmail.com",),
     Customer(name="Josh Andrew", email="josh@gmail.com"),
     Customer(name="Maureen Karimi", email="molly@gmail.com"),
 ]

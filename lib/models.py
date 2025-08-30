@@ -22,7 +22,7 @@ class Customer(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
-    phone = Column(String(20))
+    phone = Column(String(20), nullable=True)
     email = Column(String(100))
     
     sales = relationship("Sale", back_populates="customer")
