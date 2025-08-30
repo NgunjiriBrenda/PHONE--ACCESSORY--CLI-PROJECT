@@ -57,13 +57,12 @@ python main.py
 Main Menu Options:
 
 text
-========================================
 Welcome to Phone Accessory Manager!
 1. Accessory Management
 2. Customer Management  
 3. Sale Management
 4. Exit
-========================================
+
 Database Schema
 Tables:
 accessories - Phone accessory inventory
@@ -150,7 +149,6 @@ Pause functionality to read messages before continuing
 
  Sample Data
 The database comes pre-loaded with:
-
 5 sample accessories (Phone cases, chargers, screen protectors)
 
 5 sample customers with contact information
@@ -158,11 +156,7 @@ The database comes pre-loaded with:
 Ready-to-use sales table structure
 
  Future Enhancements
-Complete sales management functionality
-
-Inventory reporting and analytics
-
-Customer purchase history
+Complete sales management functionality, Inventory reporting and analytics, Customer purchase history
 
 
 
